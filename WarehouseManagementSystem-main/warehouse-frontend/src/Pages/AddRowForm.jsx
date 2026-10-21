@@ -1,10 +1,7 @@
-import { NavLink, useNavigate, useParams } from "react-router-dom";
-
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
 import { addLog } from "./services/AuditLogService";
 import { useSelector } from "react-redux";
-
 import { fieldConfig } from "./configuration/fieldConfig";
 import { apiConfig } from "./configuration/apiConfig";
 import { idConfig } from "./configuration/idConfig";
