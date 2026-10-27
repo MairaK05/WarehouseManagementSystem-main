@@ -1,5 +1,5 @@
 package com.warehouse_backend.wh_backend.web.models;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -19,5 +19,5 @@ public class AuditLog {
     private String logAction;
     private String logRecipient;
     private Long logRecipientID;
-    private Instant logTimestamp;
+    private LocalDateTime logTimestamp;
 }

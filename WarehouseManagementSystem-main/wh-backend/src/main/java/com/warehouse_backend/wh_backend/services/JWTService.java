@@ -23,28 +23,28 @@ public class JWTService {
 
     String secretKey = "";
 
-    public JWTService(){
+    public JWTService() {
         try {
             KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
-            SecretKey sec_key =keyGen.generateKey();
+            SecretKey sec_key = keyGen.generateKey();
             secretKey = Base64.getEncoder().encodeToString(sec_key.getEncoded());
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
-        } 
+        }
     }
 
     public String generateToken(String username) {
 
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
-        .claims()
-        .add(claims)
-        .subject(username)
-        .issuedAt(new Date(System.currentTimeMillis()))
-        .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 60 * 60))
-        .and()
-        .signWith(getKey())
-        .compact();
+                .claims()
+                .add(claims)
+                .subject(username)
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 60 * 60))
+                .and()
+                .signWith(getKey())
+                .compact();
     }
 
     private SecretKey getKey() {
@@ -63,10 +63,10 @@ public class JWTService {
 
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
-            .verifyWith(getKey())
-            .build()
-            .parseSignedClaims(token)
-            .getPayload();
+                .verifyWith(getKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {

@@ -9,15 +9,14 @@ a:link {
   text-decoration: none;
 }
 
-
 table, th, td {
   border-collapse: collapse;
 }
 table {
+  justify-self: center;
   width: 1020px;
   align-items: center;
   margin: 20px;
-  justify-self: center;
 }
 
 th, td {
@@ -48,7 +47,6 @@ table button:hover {
   border-radius: 8px;
   border: none;
 }
-
 
 #layout {
   display: flexbox;
@@ -140,26 +138,30 @@ table button:hover {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-div.select-subject a {
+.select-subject a { /*link buttons on the homepage */
   width: 200px;
-  padding: 15px;
+  padding: 13px;
   color: #DBEDE9;
   background-color: #656fc6;
-  border-radius: 10px;
+  border: solid;
+  border-color: #000000;
+  border-radius: 4px;
   font-size: 25px;
   text-align: center;
 }
-div.select-subject a:hover {
+.select-subject a:hover {
   background-color: #565eaa;
 }
 
-div.select-subject {
+.select-subject {
   display: flex;
-  align-items: center;
+  width: 180px;
+  height: 100%;
   flex-direction: column;
-  padding: 30px;
-  gap: 10px;
+  padding-top: 30px;
+  gap: 2px;
   text-align: center;
+  float: top;
 }
 
 .manager-link {
@@ -176,7 +178,61 @@ div.select-subject {
 
 }
 
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding: 20px;
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4);
+}
 
+.modal-content {
+  display: block;
+  background-color: #ffffff;
+  padding: 50px;
+  border: solid;
+  border-color: #000000;
+  box-shadow: 5px 5px 5px  #000000;
+  height: 100px;
+  margin-left: 250px;
+  margin-right: 250px;
+}
 
+#expiringRes { /* Expiring reservations on the home page*/
+  margin-left: 100px;
+  margin-right: 50px;
+  font-weight: 300;
+  color: #d3d6fd;
+  background-color: #2f2a2a;
+  border: solid 7px;
+  border-color: #04010f;
+  margin-top: 10px;
+  padding: 30px;
+  padding-left: 15px;
+  float: left;
+}
 
+#expiringRes li { 
+  display: flex;
+  justify-self: left;
+  flex-direction: column;
+}
+#expiringRes li:hover {
+  display: flex;
+  cursor: default;
+  font-weight: 500;
+  flex-direction: column;
+}
+
+.homePage {
+  display: flex;
+  flex-direction: row;
+}
 

@@ -17,7 +17,7 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository; //repository for employees and their attributes
 
-    public EmployeeService(EmployeeRepository employeeRepository){ //Constructor for the employee service
+    public EmployeeService(EmployeeRepository employeeRepository) { //Constructor for the employee service
         this.employeeRepository = employeeRepository;
     }
 

@@ -1,6 +1,6 @@
 package com.warehouse_backend.wh_backend.entities;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,5 +29,5 @@ public class AuditLogEntity {
     @Column(name="LOG_RECIPIENT_ID")
     Long logRecipientID;
     @Column(name="LOG_TIMESTAMP")
-    Instant logTimestamp;
+    LocalDateTime logTimestamp;
 }

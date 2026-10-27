@@ -15,13 +15,18 @@ import AddRowForm from './Pages/AddRowForm';
 import UpdateEntityForm from './Pages/UpdateEntityForm';
 import { useSelector } from 'react-redux';
 import AuditLogs from './Pages/AuditLogs';
+import Register from './Pages/Register'
 function App() {
   const dispatch = useDispatch();
   useEffect(() => { //this sets the user status to logged in if a token exists in local storage, regardless of validity
     const token = localStorage.getItem("token");
     if (token) { 
+      try{
       const decoded = jwtDecode(token);
-      dispatch(loginSuccessful({user: decoded.sub, loggedIn: true, token: token}))
+      dispatch(loginSuccessful({user: decoded?.sub, loggedIn: true, token: token}))
+      } catch (err) {
+        console.log("No token");
+      }
     }
   }, [])
 
@@ -38,6 +43,7 @@ function App() {
             <Route path={'auditLogs'} Component={AuditLogs}/>
           </Route>
           <Route path={'login'} Component={Login} element={<Login />}/>
+          <Route path={'register'} Component={Register} element={<Register />}/>
         </Route>
       </Routes>
       </BrowserRouter>

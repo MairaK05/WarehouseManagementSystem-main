@@ -48,14 +48,17 @@ export default function UpdateEntity() {
             await addLog(username, 
                 "UPDATE", entity, id, new Date());
             alert(`${entity} updated successfully!`);
-        }).catch(error => {
+        }).then(() => (
+            window.location.reload()
+        )
+        .catch(error => {
             console.error(error);
-        })
+        }))
     }
     return (
         <>
         <div>
-        <button onClick={() => nav(-1)} id="return-button">Return</button>
+        <button onClick={() => nav(`/manager/${entity}`)} id="return-button">Return</button>
         <h2 className="form-header">Update {entity}</h2>
         </div>
         <div>

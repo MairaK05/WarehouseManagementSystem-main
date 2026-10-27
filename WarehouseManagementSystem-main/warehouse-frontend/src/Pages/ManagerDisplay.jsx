@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, UNSAFE_AwaitContextProvider } from "react-router-dom";
 import deleteIcon from "../images/delete.png";
 import editIcon from "../images/Edit.png";
 import addCircle from "../images/add_circle.png";
 import { useSelector } from "react-redux";
 import { addLog } from "./services/AuditLogService";
 import { useParams } from "react-router-dom";
-
+import { addReservation } from "./services/ReservationService";
 import { fieldConfig } from "./configuration/fieldConfig";
 import { apiConfig } from "./configuration/apiConfig";
 import { idConfig } from "./configuration/idConfig";
 import { getConfig } from "./configuration/getConfig";
-
+import {getEmployeeID} from "./services/LoginService"
 async function handleDelete(id, username, api, entity) {
   //Handle an existing row being deleted
   await api
@@ -31,9 +31,17 @@ async function handleDelete(id, username, api, entity) {
 const Manager = () => {
   const username = useSelector((state) => state.login.user); //we get the username from the redux store
   const [ent, setEntity] = useState([]); //ent will store all of our table values, setEntity will set them
-  const { entity } = useParams(); //we obtain the type of entity (e.g, vehicles) that we are dealing with, and handle the table accordingly 
+  const { entity } = useParams(); //we obtain the type of entity (e.g, vehicles) that we are dealing with, and handle the table accordingly
+  const [focusID, setFocusID] = useState();
+  let fields = fieldConfig[entity]; // we use the correct fields
 
-  let fields = fieldConfig[entity]; // we use the correct fields 
+  function displayModal(model, brand) {
+    console.log(brand + " " + model);
+    let modal = document.getElementById("reservationModal");
+    document.getElementById("reservationHeader").innerHTML =
+      "Reserve " + brand + " " + model;
+    modal.style.display = "block";
+  }
 
   useEffect(() => {
     getConfig[entity]
@@ -63,7 +71,7 @@ const Manager = () => {
                   <td>{row[idConfig[entity]]}</td>
                   {fields.map((field) => (
                     <>
-                      <td>{row[field.name]}</td>
+                      <td>{String(row[field.name])}</td>
                     </>
                   ))}
                   <button
@@ -83,6 +91,16 @@ const Manager = () => {
                       <img src={editIcon} />
                     </Link>
                   </button>
+                  <button
+                    hidden={entity !== "vehicles"}
+                    id="reserveButton"
+                    onClick={() => {
+                      displayModal(row["vehicleModel"], row["vehicleBrand"]);
+                      setFocusID(row[idConfig[entity]]);
+                    }}
+                  >
+                    Reserve
+                  </button>
                 </tr>
               );
             })}
@@ -95,8 +113,52 @@ const Manager = () => {
           Add Row
         </NavLink>
       </div>
+      <ReservationModal vehicleID={focusID} username={username}/>
     </>
   );
 };
+
+const ReservationModal = ({vehicleID, username}) => {
+  const [custID, setCustID] = useState();
+  const [employeeID, setEmployeeID] = useState();
+
+  useEffect(() => {
+    getEmployeeID(username).then((response) => {
+      console.log(response);
+      setEmployeeID(response);
+    }).catch((err) => console.log(err))
+  }, []);
+
+  console.log("ID TO BE SENT " + typeof employeeID);
+  const date = new Date();
+  date.setDate(date.getDate() + 7);
+
+  window.onclick = function (event) {
+    let modal = document.getElementById("reservationModal");
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+  return (
+    <div className="modal" id="reservationModal">
+    <div className="modal-content">
+      <h3 id="reservationHeader">Reserve a vehicle</h3>
+      <p id="errorMsg"></p>
+          <div>
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                await addReservation(vehicleID, date, "Reserved", custID.customerID, employeeID);
+              }}
+            >
+              <label>Customer ID<input type="text" name="customerID" onChange={(e) => setCustID({...custID, ["customerID"]: e.target.value})}></input></label>
+              <input type="submit"></input>
+              <p>Reserve until {(date).toDateString()}</p>
+            </form>
+          </div>
+    </div>
+  </div>
+  );
+}
 
 export default Manager;

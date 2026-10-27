@@ -15,13 +15,16 @@ const usersSlice = createSlice({
             state.loading = true;
             state.err = null;
         },
+        userRegister: state => {
+            state.loading = true;
+            state.err = null;
+        },
         loginSuccessful: (state, action) => {
             state.loading = false;
             state.loggedIn = true;
             state.token = action.payload.token;
             state.err = null;
             state.user = action.payload.user;
-
         },
         loginUnsuccessful: (state, action) => {
             state.loading = false;

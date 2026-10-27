@@ -26,9 +26,12 @@ const AddRowForm = () => {
             "CREATE", entity, response.data[idConfig[entity]], new Date());
             return response;
         })
-            .catch(error => {
-                console.error(error);
-            })
+        .then(() => (
+            window.location.reload()
+        )
+        .catch(error => {
+            console.error(error);
+        }))
     }
     const onInputChange = (e) => {
         setEntity({...ent, [e.target.name]: e.target.value}); 
@@ -36,7 +39,7 @@ const AddRowForm = () => {
 
     return (
         <div>
-            <button onClick={() => nav(-1)} id="return-button">Return</button>
+            <button onClick={() => nav(`/manager/${entity}`)} id="return-button">Return</button>
             <h2 className="form-header">Create new {entity}</h2>
         <div>
         <form onSubmit={handleSubmit} id="form">

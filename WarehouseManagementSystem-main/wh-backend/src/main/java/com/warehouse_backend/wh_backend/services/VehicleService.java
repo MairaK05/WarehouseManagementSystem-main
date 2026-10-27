@@ -64,6 +64,5 @@ public class VehicleService {
     private Vehicle translateDbToWeb(VehicleEntity entity) {
         return new Vehicle(entity.getVehicleID(), entity.getVehicleModel(), entity.getVehicleBrand(), entity.getVehiclePrice(), entity.getVehicleMileage(), entity.isUsed());
     }
-    
 
 }
