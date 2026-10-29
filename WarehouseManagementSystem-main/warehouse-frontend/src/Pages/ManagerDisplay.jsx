@@ -33,6 +33,14 @@ const Manager = () => {
   const [ent, setEntity] = useState([]); //ent will store all of our table values, setEntity will set them
   const { entity } = useParams(); //we obtain the type of entity (e.g, vehicles) that we are dealing with, and handle the table accordingly
   const [focusID, setFocusID] = useState();
+  const [search, setSearch] = useState("");
+  const handleSearch = () => {
+    
+  }
+  const onSearchChange = (e) => {
+    let lowerCase = e.target.value.toLowerCase();
+    setSearch(lowerCase);
+  }
   let fields = fieldConfig[entity]; // we use the correct fields
 
   function displayModal(model, brand) {
@@ -51,11 +59,13 @@ const Manager = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [username]);
 
   return (
     <>
       <div className="table-container">
+        <label>Search</label><input id="searchBar" type="text" onChange={(e) => {onSearchChange(e)}}/>
+        <label>{search}</label>
         <table>
           <thead>
             <th>ID</th>
@@ -66,12 +76,14 @@ const Manager = () => {
           </thead>
           <tbody>
             {ent.map((row) => {
-              return (
-                <tr key={row[idConfig[entity]]}>
+              console.log();
+              return ( //Only show the ones that include some of the search, if there is one
+                <tr key={row[idConfig[entity]]} hidden={!Object.values(row)
+                .some((r) => String(r).toLowerCase().includes(search.toLowerCase()))}>
                   <td>{row[idConfig[entity]]}</td>
                   {fields.map((field) => (
                     <>
-                      <td>{String(row[field.name])}</td>
+                      <td>{String(row[field.name])}</td >
                     </>
                   ))}
                   <button

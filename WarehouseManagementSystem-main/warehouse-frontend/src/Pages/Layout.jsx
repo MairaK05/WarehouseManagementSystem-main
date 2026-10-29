@@ -27,8 +27,9 @@ const Layout = () => {
             <h1>
                 <button onClick={handleLogout} hidden={!isLoggedIn} id='header-link'>Logout</button>
                 <button hidden={isLoggedIn}><Link to={'/login'} id='login-link'>Login</Link></button>
+                <button hidden={isLoggedIn}><Link to={'/register'} id='login-link'>Register</Link></button>
                 <Link to={'/'} className={'header-link'}>Dealership Manager</Link>
-                <label>Hello {username}!<img src={userIcon}></img></label>
+                <label hidden={!isLoggedIn}>Hello {username}!<img src={userIcon}></img></label>
             </h1>
         </header>
 

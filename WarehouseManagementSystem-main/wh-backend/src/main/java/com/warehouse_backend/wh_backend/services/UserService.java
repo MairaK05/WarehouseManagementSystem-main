@@ -6,10 +6,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.io.Console;
-import java.util.Optional;
-
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.security.authentication.AuthenticationManager;
 
 import com.warehouse_backend.wh_backend.entities.EmployeeEntity;
@@ -91,7 +87,6 @@ public class UserService {
         try {
             Authentication authentication = authManager
                     .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-
             if (authentication.isAuthenticated()) {
                 return jwtService.generateToken(user.getUsername());
             }

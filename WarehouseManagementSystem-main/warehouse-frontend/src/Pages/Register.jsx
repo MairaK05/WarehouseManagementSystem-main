@@ -1,26 +1,19 @@
-import { Form, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { registerApi, getEmployeeID } from "./services/LoginService";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  userLogin,
-  loginSuccessful,
-  loginUnsuccessful,
-} from "../Slices/userSlice";
+import { registerApi } from "./services/LoginService";
+import { useSelector } from "react-redux";
 
 export const Register = () => {
     const isLoggedIn = useSelector(state => state.login.loggedIn);
     const navigate = useNavigate();
-    const location = useLocation();
+    console.log(isLoggedIn);
     useEffect(() => {
       console.log(isLoggedIn);
-      if (isLoggedIn && location.state?.from) {
-        navigate(location.state.from);
+      if (isLoggedIn) {
+        console.log("Redirecting...");
+        navigate("/");
       }
-    }, []);
-    const dispatch = useDispatch(); //We use this to dispatch our login actions and induce state change via redux
-    dispatch(userLogin()); //login/register process begins
-
+    }, [isLoggedIn]);
 
     const handleSubmit = async (e) => { //handle the registration form being submitted
       e.preventDefault();
@@ -34,7 +27,6 @@ export const Register = () => {
         })
         .catch((err) => {
           alert("Something went wrong! Try again");
-          dispatch(loginUnsuccessful({ err: err.data }));
         });
     }
 

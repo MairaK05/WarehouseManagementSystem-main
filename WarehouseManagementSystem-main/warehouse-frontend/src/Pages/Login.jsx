@@ -13,18 +13,23 @@ export const Login = () => {
   //Login form
   const isLoggedIn = useSelector(state => state.login.loggedIn);
   const navigate = useNavigate();
+  console.log(isLoggedIn);
   const location = useLocation();
-  console.log("Outside useEffect: " + isLoggedIn);
   useEffect(() => {
-    console.log("Within useEffect: " + isLoggedIn);
-    if (isLoggedIn == true) {
-      console.log("Hello world");
-      navigate(location.state?.from);
+    console.log(isLoggedIn);
+    if (isLoggedIn) {
+      console.log("Redirecting...");
+      if (location.state?.from){
+        navigate(location.state?.from);
+      }
+      else{
+        navigate("/");
+      }
     }
     else {
-    dispatch(userLogin());
+      dispatch(userLogin());
     } //login process begins
-  }, []);
+  }, [isLoggedIn]);
   const dispatch = useDispatch(); //We use this to dispatch our login actions and induce state change via redux
   async function handleSubmit(e) {
     //when user presses submit

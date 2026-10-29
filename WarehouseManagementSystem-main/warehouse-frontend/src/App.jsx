@@ -1,12 +1,10 @@
 import { useState } from 'react'
-import {BrowserRouter, Navigate, Outlet, redirect, Route, Routes, useLocation} from 'react-router-dom'
+import {BrowserRouter, Navigate, Outlet, Route, Routes, useLocation} from 'react-router-dom'
 import Home from './Pages/Home'
 import Login from './Pages/Login'
 import ManagerDisplay from './Pages/ManagerDisplay'
 import Layout from './Pages/Layout'
 import './App.css'
-import { Provider } from 'react-redux'
-import { useReducer } from 'react'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import {loginSuccessful} from './Slices/userSlice'
@@ -14,8 +12,7 @@ import {jwtDecode} from 'jwt-decode';
 import AddRowForm from './Pages/AddRowForm';
 import UpdateEntityForm from './Pages/UpdateEntityForm';
 import { useSelector } from 'react-redux';
-import AuditLogs from './Pages/AuditLogs';
-import Register from './Pages/Register'
+import Register from './Pages/Register';
 function App() {
   const dispatch = useDispatch();
   useEffect(() => { //this sets the user status to logged in if a token exists in local storage, regardless of validity
@@ -40,7 +37,6 @@ function App() {
             <Route path={'manager/:entity'} Component={ManagerDisplay}/>
             <Route path={'addRow/:entity'} Component={AddRowForm}></Route>
             <Route path={'update/:entity/:id'} Component={UpdateEntityForm}/>
-            <Route path={'auditLogs'} Component={AuditLogs}/>
           </Route>
           <Route path={'login'} Component={Login} element={<Login />}/>
           <Route path={'register'} Component={Register} element={<Register />}/>
