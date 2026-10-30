@@ -33,7 +33,6 @@ const Home = () => {
             document.getElementById("dashboard").style.display = "flex";
         }
     }, [isLoggedIn]);
-    console.log(customer);
     return (
         <div className="homePage" id="homePage">
             <div className="select-subject">

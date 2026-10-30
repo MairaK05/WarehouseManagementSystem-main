@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, NavLink, UNSAFE_AwaitContextProvider } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import deleteIcon from "../images/delete.png";
 import editIcon from "../images/Edit.png";
 import addCircle from "../images/add_circle.png";
@@ -30,13 +30,24 @@ async function handleDelete(id, username, api, entity) {
 
 const Manager = () => {
   const username = useSelector((state) => state.login.user); //we get the username from the redux store
-  const [ent, setEntity] = useState([]); //ent will store all of our table values, setEntity will set them
+
+  const vehiclesAreLoading = useSelector(state => !state.vehicleLoading.value.completed); 
+  const employeesAreLoading = useSelector(state => !state.employeeLoading.value.completed);
+  const auditsAreLoading = useSelector(state => !state.auditLoading.value.completed);
+  const vehicles = useSelector(state => state.vehicles.value); 
+  const employees = useSelector(state => state.employees.value); 
+  const auditLogs = useSelector(state => state.logs.value); 
+  const state = useSelector(state => state);
+  console.log(state);
+  const reducerConfig = {
+    vehicles: vehicles,
+    employees: employees,
+    auditLogs: auditLogs
+  }
   const { entity } = useParams(); //we obtain the type of entity (e.g, vehicles) that we are dealing with, and handle the table accordingly
   const [focusID, setFocusID] = useState();
   const [search, setSearch] = useState("");
-  const handleSearch = () => {
-    
-  }
+
   const onSearchChange = (e) => {
     let lowerCase = e.target.value.toLowerCase();
     setSearch(lowerCase);
@@ -51,21 +62,12 @@ const Manager = () => {
     modal.style.display = "block";
   }
 
-  useEffect(() => {
-    getConfig[entity]
-      .then((response) => {
-        setEntity(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [username]);
-
   return (
     <>
       <div className="table-container">
         <label>Search</label><input id="searchBar" type="text" onChange={(e) => {onSearchChange(e)}}/>
         <label>{search}</label>
+       {vehiclesAreLoading || employeesAreLoading || auditsAreLoading ? <p>Loading...</p> : 
         <table>
           <thead>
             <th>ID</th>
@@ -75,7 +77,7 @@ const Manager = () => {
             <th />
           </thead>
           <tbody>
-            {ent.map((row) => {
+            {reducerConfig[entity].map((row) => {
               console.log();
               return ( //Only show the ones that include some of the search, if there is one
                 <tr key={row[idConfig[entity]]} hidden={!Object.values(row)
@@ -83,7 +85,7 @@ const Manager = () => {
                   <td>{row[idConfig[entity]]}</td>
                   {fields.map((field) => (
                     <>
-                      <td>{String(row[field.name])}</td >
+                      <td>{String(row[field.name])}</td>
                     </>
                   ))}
                   <button
@@ -117,7 +119,7 @@ const Manager = () => {
               );
             })}
           </tbody>
-        </table>
+        </table>}
       </div>
       <div>
         <NavLink to={`/addRow/${entity}`}>

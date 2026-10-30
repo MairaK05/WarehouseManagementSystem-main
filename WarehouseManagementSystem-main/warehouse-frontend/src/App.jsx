@@ -13,9 +13,15 @@ import AddRowForm from './Pages/AddRowForm';
 import UpdateEntityForm from './Pages/UpdateEntityForm';
 import { useSelector } from 'react-redux';
 import Register from './Pages/Register';
+import { loadEntity } from './thunks'
+
 function App() {
   const dispatch = useDispatch();
   useEffect(() => { //this sets the user status to logged in if a token exists in local storage, regardless of validity
+    dispatch(loadEntity('vehicles'));
+    dispatch(loadEntity('employees'));
+    dispatch(loadEntity('auditLogs'));
+    console.log("Loaded state values");
     const token = localStorage.getItem("token");
     if (token) { 
       try{
